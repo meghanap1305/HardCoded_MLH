@@ -88,6 +88,17 @@
     "hashtags": ["#Airtel", "#BhartiAirtel"]
   },
   {
+    "symbol": "POLICYBZR",
+    "nse_symbol": "POLICYBZR",
+    "bse_symbol": "543390",
+    "yahoo_symbol": "POLICYBZR.NS",
+    "canonical_name": "PB Fintech Limited",
+    "sector": "Fintech & Insurtech",
+    "aliases": ["PolicyBazaar", "Policy Bazar", "PB Fintech", "Paisabazaar", "Yashish Dahiya"],
+    "cashtags": ["$POLICYBZR", "$PBFINTECH"],
+    "hashtags": ["#PolicyBazaar", "#PolicyBazar", "#PBFintech"]
+  },
+  {
     "symbol": "NVDA",
     "nse_symbol": "NVDA",
     "bse_symbol": null,

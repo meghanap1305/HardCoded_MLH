@@ -319,7 +319,7 @@ def main():
             st.write("Ingest community posts (via official X API or manual/file upload) and run structured extraction via local Gemma 4.")
 
             # Ingestion Sub-options
-            ingest_col1, ingest_col2 = st.columns([1, 1])
+            ingest_col1, ingest_col2, ingest_col3 = st.columns([1, 1, 1])
 
             with ingest_col1:
                 st.markdown("#### 1. Official X API Search")
@@ -328,74 +328,130 @@ def main():
 
                 if btn_fetch_x:
                     if not social_ingestor.is_x_api_configured():
-                        st.warning("🔒 **X API Credentials Missing:** Set `X_BEARER_TOKEN` in your environment to fetch live X posts. Use manual entry or JSONL import below.")
+                        st.warning("🔒 **X API Credentials Missing:** Set `X_BEARER_TOKEN` in your environment to fetch live X posts.")
                     else:
                         with st.spinner("Querying official X API v2 (max 20 posts)..."):
                             x_res = social_ingestor.fetch_x_recent_posts(query=x_query, max_results=20)
                             if x_res["success"]:
                                 st.session_state.session_social_posts.extend(x_res["items"])
                                 st.success(f"Successfully fetched {len(x_res['items'])} posts from X API v2!")
+                                st.rerun()
                             else:
                                 st.error(f"X API Error ({x_res['status']}): {x_res['error']}")
 
             with ingest_col2:
-                st.markdown("#### 2. Manual Post Entry & Reel Upload")
+                st.markdown("#### 2. Live Reddit Stream (RSS)")
+                st.caption("Live whispers from Indian equity subreddits without API keys.")
+                selected_sub = st.selectbox("Subreddit", ["IndianStockMarket", "IndianStreetBets"], index=0)
+                if st.button("💬 Fetch Live Reddit Posts", use_container_width=True):
+                    with st.spinner(f"Ingesting live posts from r/{selected_sub}..."):
+                        red_res = social_ingestor.fetch_reddit_posts(subreddit=selected_sub, max_posts=15)
+                        if red_res["success"]:
+                            st.session_state.session_social_posts.extend(red_res["items"])
+                            st.success(f"✅ Ingested {len(red_res['items'])} live posts from r/{selected_sub}!")
+                            st.rerun()
+                        else:
+                            st.error(f"Reddit Error: {red_res.get('error')}")
+
+            with ingest_col3:
+                st.markdown("#### 3. Manual Post Entry & Reel Upload")
                 manual_text = st.text_area("Post Content / Whisper", placeholder="Rumor: Big merger between Reliance Retail and international partner...")
-                manual_platform = st.selectbox("Platform", ["x_post", "instagram_reel"], index=0)
+                manual_platform = st.selectbox("Platform", ["x_post", "instagram_reel", "reddit"], index=0)
                 uploaded_media = st.file_uploader("Upload Image or Video (Optional)", type=["png", "jpg", "jpeg", "mp4"])
 
                 if st.button("➕ Add Post to Timeline", use_container_width=True):
                     if not manual_text.strip():
                         st.warning("Please provide post text or whisper content.")
                     else:
-                        saved_img_paths = []
-                        saved_video_path = None
-                        if uploaded_media:
-                            save_dir = CACHE_DIR / "uploads"
-                            save_dir.mkdir(parents=True, exist_ok=True)
-                            target_p = save_dir / uploaded_media.name
-                            with open(target_p, "wb") as f:
-                                f.write(uploaded_media.getbuffer())
-                            if uploaded_media.name.endswith(".mp4"):
-                                saved_video_path = str(target_p)
-                            else:
-                                saved_img_paths.append(str(target_p))
+                        with st.spinner("Processing post and extracting video keyframes..."):
+                            saved_img_paths = []
+                            saved_video_path = None
+                            if uploaded_media:
+                                save_dir = CACHE_DIR / "uploads"
+                                save_dir.mkdir(parents=True, exist_ok=True)
+                                target_p = save_dir / uploaded_media.name
+                                with open(target_p, "wb") as f:
+                                    f.write(uploaded_media.getbuffer())
+                                if uploaded_media.name.lower().endswith(".mp4"):
+                                    saved_video_path = str(target_p)
+                                else:
+                                    saved_img_paths.append(str(target_p))
 
-                        post = social_ingestor.create_user_post(
-                            text=manual_text,
-                            platform=manual_platform,
-                            image_paths=saved_img_paths,
-                            video_path=saved_video_path,
-                            source_label="USER_UPLOAD",
-                        )
-                        if post:
-                            st.session_state.session_social_posts.insert(0, post)
-                            st.success(f"Added post with ID: {post.post_id}")
+                            try:
+                                post = social_ingestor.create_user_post(
+                                    text=manual_text,
+                                    platform=manual_platform,
+                                    image_paths=saved_img_paths,
+                                    video_path=saved_video_path,
+                                    source_label="USER_UPLOAD",
+                                )
+                                if post:
+                                    st.session_state.session_social_posts.insert(0, post)
+                                    st.success(f"✅ Added post ({post.post_id}) with {len(post.image_paths)} visual keyframes!")
+                                    st.rerun()
+                                else:
+                                    st.error("Failed to construct validated post record.")
+                            except Exception as e:
+                                st.error(f"Error processing upload: {e}")
 
             st.markdown("---")
-            st.markdown(f"#### 📜 Ingested Community Stream ({len(st.session_state.session_social_posts)} posts)")
+            st.markdown(f"#### 📜 Ingested Community Stream & Lifecycle Tracking ({len(st.session_state.session_social_posts)} posts)")
 
             if not st.session_state.session_social_posts:
-                st.info("No social posts ingested yet. Use the X API query or manual post entry above.")
+                st.info("No social posts ingested yet. Click 'Fetch Live Reddit Posts', query X, or upload a Reel above.")
             else:
                 for idx, p in enumerate(st.session_state.session_social_posts):
                     prov = getattr(p, "cognitive_provenance", "[USER_UPLOAD]")
                     pub_ist = format_ist(p.published_at or p.timestamp)
                     col_ist = format_ist(p.collected_at or p.timestamp)
-                    tickers_tag = " ".join(f"`${t}`" for t in p.tickers) if p.tickers else "`[UNMATCHED]`"
+                    tickers_tag = " ".join(f"`${t}`" for t in p.tickers) if p.tickers else "`[UNMATCHED / SPECULATIVE]`"
+
+                    # Calculate Lifecycle Stage for this post's stock
+                    primary_ticker = p.tickers[0] if p.tickers else None
+                    if primary_ticker:
+                        post_cutoff = p.published_at or p.timestamp
+                        matching_news = [n for n in all_live_items if primary_ticker in getattr(n, "tickers", [])]
+                        matching_posts = [sp for sp in st.session_state.session_social_posts if primary_ticker in sp.tickers]
+                        life_res = classify_lifecycle_stage(
+                            ticker=primary_ticker,
+                            cutoff_time=post_cutoff,
+                            social_posts=matching_posts,
+                            news_items=matching_news,
+                        )
+                        stage_badge = f"STAGE {life_res.stage_index}: {life_res.stage.value.replace('_', ' ').upper()}"
+                        stage_color = "#38BDF8" if life_res.stage_index in (1, 2) else ("#F59E0B" if life_res.stage_index == 3 else "#10B981")
+                        lead_info = f" • Social Lead: {life_res.social_lead_hours:.1f}h" if life_res.social_lead_hours else " • Pre-News Whisper"
+                    else:
+                        stage_badge = "STAGE 1: EARLY WHISPER"
+                        stage_color = "#94A3B8"
+                        lead_info = " • Unverified Market Rumour"
 
                     st.markdown(f"""
-                    <div class="hud-card" style="border-left: 4px solid #38BDF8; margin-bottom: 12px;">
+                    <div class="hud-card" style="border-left: 4px solid {stage_color}; margin-bottom: 12px;">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span class="hud-badge badge-cyan">{p.platform.value.upper()} • {prov}</span>
-                            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#94A3B8;">Published: {pub_ist} | Ingested: {col_ist}</span>
+                            <div>
+                                <span class="hud-badge badge-cyan">{p.platform.value.upper()} • {prov}</span>
+                                <span class="hud-badge" style="background:{stage_color}22; color:{stage_color}; border:1px solid {stage_color}; margin-left:8px;">{stage_badge}</span>
+                            </div>
+                            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#94A3B8;">Published: {pub_ist} {lead_info}</span>
                         </div>
-                        <div style="font-size:14px; color:#F1F5F9; margin: 8px 0;">{p.content_text}</div>
+                        <div style="font-size:14px; color:#F1F5F9; margin: 8px 0; font-weight:600;">{p.content_text}</div>
                         <div style="font-size:12px; color:#94A3B8;">
-                            Tickers: {tickers_tag} | Author: <b>@{p.author.username}</b>
+                            Identified Equities: {tickers_tag} | Author: <b>@{p.author.username}</b> | Provider: <code>{p.source_provider}</code>
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
+
+                    if p.video_path or p.image_paths:
+                        with st.expander(f"🎬 Media Details ({len(p.image_paths)} visual keyframes)"):
+                            if p.video_path and os.path.exists(p.video_path):
+                                st.video(p.video_path)
+                            if p.image_paths:
+                                img_cols = st.columns(min(len(p.image_paths), 3) or 1)
+                                for c_idx, img_p in enumerate(p.image_paths):
+                                    if os.path.exists(img_p):
+                                        with img_cols[c_idx % 3]:
+                                            st.image(img_p, caption=f"Keyframe {c_idx+1}", use_column_width=True)
 
                     # Action: Analyse with Gemma 4
                     btn_key = f"analyse_btn_{idx}_{p.post_id}"
