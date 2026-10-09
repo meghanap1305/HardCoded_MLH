@@ -1,0 +1,21 @@
+<rss version="2.0">
+  <channel>
+    <title>National Stock Exchange Corporate Announcements</title>
+    <link>https://www.nseindia.com</link>
+    <description>NSE Corporate Disclosures Feed</description>
+    <item>
+      <title>RELIANCE - Board Meeting Outcome and Strategic Investment</title>
+      <link>https://www.nseindia.com/corporate-disclosures/announcement-101</link>
+      <description>Reliance Industries Limited has announced a strategic board decision regarding energy transition and Jio infrastructure expansion.</description>
+      <pubDate>Fri, 09 Oct 2026 09:30:00 +0530</pubDate>
+      <guid>nse_rel_101</guid>
+    </item>
+    <item>
+      <title>TATAMOTORS - Production and Sales Volume Update for September 2026</title>
+      <link>https://www.nseindia.com/corporate-disclosures/announcement-102</link>
+      <description>Tata Motors Limited releases commercial and passenger vehicle production figures for Q2.</description>
+      <pubDate>Fri, 09 Oct 2026 10:15:00 +0530</pubDate>
+      <guid>nse_tamo_102</guid>
+    </item>
+  </channel>
+</rss>

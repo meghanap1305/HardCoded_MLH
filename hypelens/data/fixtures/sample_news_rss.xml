@@ -1,0 +1,21 @@
+<rss version="2.0">
+  <channel>
+    <title>Livemint Financial News</title>
+    <link>https://www.livemint.com</link>
+    <description>Latest Indian corporate news and stock market updates</description>
+    <item>
+      <title>Infosys and Cloud Partners Sign Large Multi-Year Digital Transformation Pact</title>
+      <link>https://www.livemint.com/market/stock-market-news/infosys-deal-announcement-101.html</link>
+      <description>IT giant Infosys (INFY) on Friday confirmed a new multi-year enterprise transformation engagement worth over $1.5 billion.</description>
+      <pubDate>Fri, 09 Oct 2026 12:30:00 +0530</pubDate>
+      <guid>mint_infy_101</guid>
+    </item>
+    <item>
+      <title>HDFC Bank Reports Robust Credit Growth in Q2 FY27 Business Update</title>
+      <link>https://www.livemint.com/market/stock-market-news/hdfc-bank-q2-preview-102.html</link>
+      <description>HDFC Bank posts 15 percent year-on-year loan expansion, driven by retail and corporate credit portfolios.</description>
+      <pubDate>Fri, 09 Oct 2026 13:00:00 +0530</pubDate>
+      <guid>mint_hdfc_102</guid>
+    </item>
+  </channel>
+</rss>

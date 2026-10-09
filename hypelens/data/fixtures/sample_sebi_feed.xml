@@ -1,0 +1,14 @@
+<rss version="2.0">
+  <channel>
+    <title>SEBI Regulatory Circulars and Orders</title>
+    <link>https://www.sebi.gov.in</link>
+    <description>Securities and Exchange Board of India Circulars</description>
+    <item>
+      <title>SEBI Circular: Enhanced Surveillance Framework for SME and High-Volatility Equities</title>
+      <link>https://www.sebi.gov.in/legal/circulars/oct-2026/framework-101.html</link>
+      <description>SEBI introduces guidelines to mitigate social media pump-and-dump rumors and coordinated momentum manipulation in securities markets.</description>
+      <pubDate>Fri, 09 Oct 2026 11:00:00 +0530</pubDate>
+      <guid>sebi_circ_101</guid>
+    </item>
+  </channel>
+</rss>

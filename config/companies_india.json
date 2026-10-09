@@ -1,0 +1,123 @@
+[
+  {
+    "symbol": "RELIANCE",
+    "nse_symbol": "RELIANCE",
+    "bse_symbol": "500325",
+    "yahoo_symbol": "RELIANCE.NS",
+    "canonical_name": "Reliance Industries Limited",
+    "sector": "Energy & Conglomerate",
+    "aliases": ["RIL", "Reliance", "Jio", "Reliance Retail", "Mukesh Ambani", "Ambani"],
+    "cashtags": ["$RELIANCE", "$RIL"],
+    "hashtags": ["#Reliance", "#RIL", "#RelianceJio"]
+  },
+  {
+    "symbol": "TATAMOTORS",
+    "nse_symbol": "TATAMOTORS",
+    "bse_symbol": "500570",
+    "yahoo_symbol": "TATAMOTORS.NS",
+    "canonical_name": "Tata Motors Limited",
+    "sector": "EV & Automotive",
+    "aliases": ["Tata Motors", "TaMo", "JLR", "Jaguar Land Rover", "Tata EV"],
+    "cashtags": ["$TATAMOTORS", "$TAMO"],
+    "hashtags": ["#TataMotors", "#TaMo", "#TataEV"]
+  },
+  {
+    "symbol": "INFY",
+    "nse_symbol": "INFY",
+    "bse_symbol": "500209",
+    "yahoo_symbol": "INFY.NS",
+    "canonical_name": "Infosys Limited",
+    "sector": "Information Technology",
+    "aliases": ["Infosys", "Infy", "Narayana Murthy", "Salil Parekh"],
+    "cashtags": ["$INFY", "$INFOSYS"],
+    "hashtags": ["#Infosys", "#Infy"]
+  },
+  {
+    "symbol": "TCS",
+    "nse_symbol": "TCS",
+    "bse_symbol": "532540",
+    "yahoo_symbol": "TCS.NS",
+    "canonical_name": "Tata Consultancy Services Limited",
+    "sector": "Information Technology",
+    "aliases": ["Tata Consultancy Services", "Tata Consultancy", "TCS"],
+    "cashtags": ["$TCS"],
+    "hashtags": ["#TCS", "#TataConsultancy"]
+  },
+  {
+    "symbol": "HDFCBANK",
+    "nse_symbol": "HDFCBANK",
+    "bse_symbol": "500180",
+    "yahoo_symbol": "HDFCBANK.NS",
+    "canonical_name": "HDFC Bank Limited",
+    "sector": "Banking & Financial Services",
+    "aliases": ["HDFC Bank", "HDFC", "HDFC merger"],
+    "cashtags": ["$HDFCBANK", "$HDFC"],
+    "hashtags": ["#HDFCBANK", "#HDFC"]
+  },
+  {
+    "symbol": "ICICIBANK",
+    "nse_symbol": "ICICIBANK",
+    "bse_symbol": "532174",
+    "yahoo_symbol": "ICICIBANK.NS",
+    "canonical_name": "ICICI Bank Limited",
+    "sector": "Banking & Financial Services",
+    "aliases": ["ICICI Bank", "ICICI"],
+    "cashtags": ["$ICICIBANK", "$ICICI"],
+    "hashtags": ["#ICICIBank", "#ICICI"]
+  },
+  {
+    "symbol": "ITC",
+    "nse_symbol": "ITC",
+    "bse_symbol": "500875",
+    "yahoo_symbol": "ITC.NS",
+    "canonical_name": "ITC Limited",
+    "sector": "FMCG & Consumer Goods",
+    "aliases": ["ITC", "ITC Hotels", "Sanjiv Puri"],
+    "cashtags": ["$ITC"],
+    "hashtags": ["#ITC", "#ITCLtd"]
+  },
+  {
+    "symbol": "BHARTIARTL",
+    "nse_symbol": "BHARTIARTL",
+    "bse_symbol": "532454",
+    "yahoo_symbol": "BHARTIARTL.NS",
+    "canonical_name": "Bharti Airtel Limited",
+    "sector": "Telecommunications",
+    "aliases": ["Airtel", "Bharti Airtel", "Sunil Mittal"],
+    "cashtags": ["$BHARTIARTL", "$AIRTEL"],
+    "hashtags": ["#Airtel", "#BhartiAirtel"]
+  },
+  {
+    "symbol": "NVDA",
+    "nse_symbol": "NVDA",
+    "bse_symbol": null,
+    "yahoo_symbol": "NVDA",
+    "canonical_name": "NVIDIA Corporation",
+    "sector": "Semiconductors & AI",
+    "aliases": ["Nvidia", "Jensen Huang", "GeForce"],
+    "cashtags": ["$NVDA"],
+    "hashtags": ["#NVDA", "#Nvidia"]
+  },
+  {
+    "symbol": "TSLA",
+    "nse_symbol": "TSLA",
+    "bse_symbol": null,
+    "yahoo_symbol": "TSLA",
+    "canonical_name": "Tesla, Inc.",
+    "sector": "EV & Automotive",
+    "aliases": ["Tesla", "Elon Musk", "Cybertruck"],
+    "cashtags": ["$TSLA"],
+    "hashtags": ["#TSLA", "#Tesla"]
+  },
+  {
+    "symbol": "AAPL",
+    "nse_symbol": "AAPL",
+    "bse_symbol": null,
+    "yahoo_symbol": "AAPL",
+    "canonical_name": "Apple Inc.",
+    "sector": "Consumer Tech & Hardware",
+    "aliases": ["Apple", "Tim Cook", "iPhone", "MacBook"],
+    "cashtags": ["$AAPL"],
+    "hashtags": ["#AAPL", "#Apple"]
+  }
+]

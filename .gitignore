@@ -1,0 +1,34 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Streamlit runtime
+.streamlit/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Model weights & binary dumps
+*.bin
+*.pt
+*.onnx
+*.safetensors
+*.gguf
+
+# Environment variables & secrets
+.env
+.env.*
+
+# Restrict redistribution of official guidelines PDF
+docs/reference/*.pdf

@@ -1,0 +1,120 @@
+{
+  "name": "HypeLens Indian Corporate Intelligence Feed Ingestion",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "id": "node-schedule-trigger",
+      "name": "Schedule Trigger (Every 30m)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://www.livemint.com/rss/markets",
+        "options": {}
+      },
+      "id": "node-fetch-rss",
+      "name": "Fetch Mint Markets RSS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 200]
+    },
+    {
+      "parameters": {
+        "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=India%20business&mode=artlist&maxrecords=25&format=json",
+        "options": {}
+      },
+      "id": "node-fetch-gdelt",
+      "name": "Fetch GDELT DOC API Metadata",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalise feed records to HypeLens schema\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const json = item.json;\n  results.push({\n    headline: json.title || json.headline || '',\n    publisher: json.domain || 'Livemint',\n    url: json.link || json.url || '',\n    body: json.description || json.summary || '',\n    published_at: json.pubDate || json.seendate || new Date().toISOString(),\n    collected_at: new Date().toISOString(),\n    source_provider: 'n8n_automated_feed'\n  });\n}\nreturn results;"
+      },
+      "id": "node-normalise-schema",
+      "name": "Normalise to HypeLens Schema",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8501/api/ingest",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "node-post-webhook",
+      "name": "Post to HypeLens Local Ingestion Bridge",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger (Every 30m)": {
+      "main": [
+        [
+          {
+            "node": "Fetch Mint Markets RSS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch GDELT DOC API Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Mint Markets RSS": {
+      "main": [
+        [
+          {
+            "node": "Normalise to HypeLens Schema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch GDELT DOC API Metadata": {
+      "main": [
+        [
+          {
+            "node": "Normalise to HypeLens Schema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalise to HypeLens Schema": {
+      "main": [
+        [
+          {
+            "node": "Post to HypeLens Local Ingestion Bridge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
